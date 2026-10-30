@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#041a33">
 <title>مغامرة جغرافية تفاعلية</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#041a33;--navy2:#08305a;--sea:#0b4f7c;--teal:#19c4c0;--teal2:#7ff0e6;
@@ -14,7 +14,7 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:var(--navy);color:var(--ink);overflow:hidden;
-  font-family:"Cairo","Tajawal","Segoe UI",Tahoma,"Noto Naskh Arabic",system-ui,sans-serif}
+  font-family:"Tajawal","Segoe UI",Tahoma,"Noto Naskh Arabic",system-ui,sans-serif}
 body{display:grid;grid-template-rows:auto 1fr auto;height:100dvh;user-select:none;-webkit-user-select:none}
 button{font:inherit;color:inherit;cursor:pointer}
 
@@ -177,7 +177,7 @@ footer .sig{font-size:clamp(11px,1.15vw,14px);font-weight:700;padding:3px 18px;b
   box-shadow:0 2px 0 #7a5208,0 0 14px rgba(246,196,83,.35);text-align:center}
 
 /* ===== عناصر الخريطة ===== */
-#map text{font-family:"Cairo","Tajawal","Segoe UI",Tahoma,sans-serif;text-anchor:middle;pointer-events:none;paint-order:stroke}
+#map text{font-family:"Tajawal","Segoe UI",Tahoma,sans-serif;text-anchor:middle;pointer-events:none;paint-order:stroke}
 .gov{stroke:#fff6d6;stroke-opacity:.85;stroke-width:calc(var(--u)*1.1);stroke-linejoin:round}
 .govlbl{font-size:calc(var(--u)*12.5);font-weight:700;fill:#4a3205;stroke:rgba(255,246,214,.9);stroke-width:calc(var(--u)*3)}
 .govlbl.sm{display:none}.z1 .govlbl.sm{display:block}
@@ -215,6 +215,20 @@ footer .sig{font-size:clamp(11px,1.15vw,14px);font-weight:700;padding:3px 18px;b
   .art{display:none}
 }
 @media (min-width:1600px){aside{width:430px}.card p{font-size:20px}}
+@media (orientation:landscape) and (max-height:560px){
+  main{flex-direction:row}
+  aside{width:clamp(230px,40vw,340px);max-height:none;overflow-y:auto;border-top:0;padding:6px 8px}
+  #hud{gap:8px;padding:3px 10px;flex-wrap:nowrap}
+  #hud .brand{font-size:14px}#hud .brand svg{width:24px;height:24px}
+  .stageinfo small{display:none}.legend{display:none}
+  .ibtn{width:30px;height:30px;border-radius:9px}.ibtn svg{width:16px;height:16px}
+  .score{padding:2px 10px;font-size:13px}
+  .pip{width:10px;height:10px}
+  #compass{width:58px;height:58px}
+  .card{padding:8px 10px}.card p{font-size:13px;line-height:1.5}.art{display:none}
+  .btn{padding:6px 10px;font-size:14px}
+  footer{padding:0}.sig{font-size:11px;padding:1px 10px}
+}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -253,7 +267,7 @@ footer .sig{font-size:clamp(11px,1.15vw,14px);font-weight:700;padding:3px 18px;b
   <div class="stageinfo"><b id="stName">—</b><small id="stSub">—</small></div>
   <div class="pips" id="pips"></div>
   <div class="sp"></div>
-  <div class="score">النقاط <span id="score">٠</span></div>
+  <div class="score">النقاط <span id="score">0</span></div>
   <button class="ibtn" id="bSound" title="الصوت" aria-label="الصوت"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/></svg></button>
   <button class="ibtn" id="bHelp" title="طريقة اللعب" aria-label="طريقة اللعب"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 114 2c-.9.6-1.5 1-1.5 2M12 17h.01"/></svg></button>
   <button class="ibtn" id="bRestart" title="إعادة اللعب من البداية" aria-label="إعادة اللعب"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 109-9M3 4v5h5"/></svg></button>
@@ -378,7 +392,7 @@ const COUNTRY_LABELS = [["الإمارات", 54.3, 23.8], ["السعودية", 5
 (() => {
 'use strict';
 const $ = s => document.querySelector(s);
-const toAr = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const toAr = n => String(n);
 const fmt = (v, d = 2) => toAr(v.toFixed(d)).replace('.', '٫');
 const NS = 'http://www.w3.org/2000/svg';
 const KEY = 'wadighul_geo_adventure_v2';
@@ -722,7 +736,7 @@ function renderCard() {
     <div class="drag-hint"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></svg>اسحبها إلى الخريطة أو اضغطها ثم اضغط الموقع</div>
   </div>
   <div id="hintbox"></div>
-  <div class="row"><button class="btn teal" id="bHint">تلميح (−١٠)</button></div>`;
+  <div class="row"><button class="btn teal" id="bHint">تلميح (−10)</button></div>`;
   $('#bHint').onclick = giveHint;
   bindCard($('#card'));
   rec = { w: 0, h: 0 };
